@@ -46,12 +46,12 @@ class Player(object):
         return str(self)
 
 
-class PyQuake3(object):
+class PyQuake2(object):
     """
-    PyQuake3 class
+    PyQuake2 class
     """
-    packet_prefix = '\xff' * 4
-    player_reo = re.compile(r'^(\d+) (\d+) "(.*)"')
+    packet_prefix = "\xff\xff\xff\xff\x02"
+    player_reo = re.compile(r'^(-?\d+) (\d+) "(.*)"')
 
     rcon_password = None
     port = None
@@ -61,7 +61,7 @@ class PyQuake3(object):
 
     def __init__(self, server, rcon_password=''):
         """
-        create a new instance of PyQuake3
+        create a new instance of PyQuake2
         """
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.set_server(server)
@@ -134,15 +134,13 @@ class PyQuake3(object):
         """
         parse the received packet
         """
-        if data.find(self.packet_prefix) != 0:
-            raise Exception('Malformed packet')
-
         first_line_length = data.find('\n')
         if first_line_length == -1:
             raise Exception('Malformed packet')
 
         response_type = data[len(self.packet_prefix):first_line_length]
         response_data = data[first_line_length + 1:]
+
         return response_type, response_data
 
     def parse_status(self, data):
@@ -180,7 +178,7 @@ class PyQuake3(object):
         """
         get status
         """
-        data = self.command('getstatus')[1]
+        data = self.command('status')[1]
         self.values = self.parse_status(data)
 
     def rcon_update(self):
