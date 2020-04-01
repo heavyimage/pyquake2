@@ -1,9 +1,9 @@
 import pytest
-from pyquake3 import Player
-from pyquake3 import PyQuake3
+from pyquake2 import Player
+from pyquake2 import PyQuake2
 
 GAMER = Player(3, 'Name', 5, 14, '1.1.1.1')
-SERVER = PyQuake3('127.0.0.1:27960', 'password')
+SERVER = PyQuake2('127.0.0.1:27960', 'password')
 
 
 class TestClass(object):
