@@ -212,20 +212,39 @@ class PyQuake2(object):
             return
         q.broadcast("Changing server to %s" % level)
         self.rcon("gamemap %s" % level)
+
+
 if __name__ == '__main__':
 
-    QUAKE = PyQuake3(server='localhost:27960', rcon_password='secret')
+    SERVER = "localhost:27910"
+    PASSWORD = "admin"
 
-    QUAKE.update()
+    q = PyQuake2(server=SERVER, rcon_password=PASSWORD)
+    q.update()
+    print "The server name of '%s' is %s, running map %s with %s player(s)." % (q.get_address(), q.values['hostname'], q.values['mapname'], len(q.players))
 
-    print "The server name of '%s' is %s, running map %s with %s player(s)." % (QUAKE.get_address(), QUAKE.values['sv_hostname'], QUAKE.values['mapname'], len(QUAKE.players))
+    # Player info
+    for gamer in q.players:
+        print "\t%s with %s frags and a %s ms ping" % (gamer.name, gamer.frags, gamer.ping)
 
-    for gamer in QUAKE.players:
-        print "%s with %s frags and a %s ms ping" % (gamer.name, gamer.frags, gamer.ping)
+    # To get IP info
+    q.rcon_update()
+    for gamer in q.players:
+        print "\t%s (%s) has IP address of %s" % (gamer.name, gamer.num, gamer.address)
 
-    QUAKE.rcon_update()
+    # Broadcast messages to all players
+    q.broadcast("pyquake2 is great!")
 
-    for gamer in QUAKE.players:
-        print "%s (%s) has IP address of %s" % (gamer.name, gamer.num, gamer.address)
+    # Change levels
+    q.change_level("marics55")
 
-    QUAKE.rcon('bigtext "pyquake3 is great"')
+    # Simple command loop
+    # commands are anything that follow /rcon PASSWORD eg:
+    #   say hi
+    #   gamemap dm1
+    import readline
+    while True:
+        cmd = raw_input("> ")
+        if cmd == "":
+            break
+        q.rcon(cmd)
