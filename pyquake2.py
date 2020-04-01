@@ -203,7 +203,15 @@ class PyQuake2(object):
             except (IndexError, ValueError):
                 continue
 
+    def broadcast(self, msg):
+        self.rcon("say %s" % msg)
 
+    def change_level(self, level):
+        q.update()
+        if q.values['mapname'] == level:
+            return
+        q.broadcast("Changing server to %s" % level)
+        self.rcon("gamemap %s" % level)
 if __name__ == '__main__':
 
     QUAKE = PyQuake3(server='localhost:27960', rcon_password='secret')
