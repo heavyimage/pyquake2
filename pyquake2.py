@@ -1,7 +1,9 @@
 """
-Python Quake 3 Library
-http://misc.slowchop.com/misc/wiki/pyquake3
-Copyright (C) 2006-2007 Gerald Kaszuba
+Python Quake 2 Library
+
+Based on:
+    http://misc.slowchop.com/misc/wiki/pyquake3
+    Copyright (C) 2006-2007 Gerald Kaszuba
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
